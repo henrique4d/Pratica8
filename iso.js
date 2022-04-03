@@ -104,10 +104,27 @@ class Skeleton extends Phaser.GameObjects.Image {
         scene.time.delayedCall(this.anim.speed * 1000, this.changeFrame, [], this);
     }
 
+    can_keep_going(x0, y0, x1, y1, x2, y2) {
+        let distance =
+            Math.abs((x2 - x1) * (y1 - y0) - (x1 - x0) * (y2 - y1)) /
+            Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
+
+        if (distance - 2 < 0) return false;
+        else return true;
+    }
+
     update ()
     {
         if (this.motion === 'walk')
         {
+            let x0 = this.x + this.direction.x * this.speed;
+            let y0 = this.y + this.direction.y * this.speed;
+
+            if (!this.can_keep_going(x0, y0, 0, 378, 804, 776)) return;
+            if (!this.can_keep_going(x0, y0, 776, 0, 0, 378)) return;
+            if (!this.can_keep_going(x0, y0, 776, 0, 1582, 378)) return;
+            if (!this.can_keep_going(x0, y0, 786, 764, 1582, 378)) return;
+            
             this.x += this.direction.x * this.speed;
 
             if (this.direction.y !== 0)
